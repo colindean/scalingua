@@ -7,6 +7,8 @@ crossPaths := true
 publishArtifact := false
 publishTo := Some(Resolver.file("Transient repository", file("/tmp/unused")))
 
+resolvers += Resolver.typesafeIvyRepo("releases")
+
 val common = Seq(
   organization := "ru.makkarpov",
   version := (version in LocalRootProject).value,
@@ -90,7 +92,7 @@ lazy val play = project
 
     // Recent versions of Play supports only recent version of Scala.
     // We should keep `crossPath` to keep naming consistent
-    scalaVersion := "2.11.11",
+    scalaVersion := scala.util.Properties.versionNumberString,
     crossScalaVersions := Seq("2.11.11", "2.12.2"),
 
     libraryDependencies ++= Seq(
