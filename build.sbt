@@ -7,14 +7,12 @@ crossPaths := true
 publishArtifact := false
 publishTo := Some(Resolver.file("Transient repository", file("/tmp/unused")))
 
-enablePlugins(CrossPerProjectPlugin)
-
 val common = Seq(
   organization := "ru.makkarpov",
-  version <<= version in LocalRootProject,
+  version := (version in LocalRootProject).value,
 
   crossPaths := true,
-  scalaVersion := "2.10.4",
+  scalaVersion := "2.12.2",
   crossScalaVersions := Seq("2.10.4", "2.11.11", "2.12.2"),
   scalacOptions ++= Seq( "-Xfatal-warnings", "-feature", "-deprecation" ),
 
@@ -114,9 +112,8 @@ lazy val plugin = project
     crossScalaVersions := Seq(scalaVersion.value),
     sbtPlugin := true,
 
-    ScriptedPlugin.scriptedSettings,
-    scriptedLaunchOpts ++= Seq(
-      "-Xmx1024M", "-XX:MaxPermSize=256M", "-Dscalingua.version=" + (version in LocalRootProject).value
-    ),
+    scriptedLaunchOpts := { scriptedLaunchOpts.value ++
+      Seq("-Xmx1024M", "-XX:MaxPermSize=256M", "-Dscalingua.version=" + (version in LocalRootProject).value)
+    },
     scriptedBufferLog := false
   ).dependsOn(scalingua)
